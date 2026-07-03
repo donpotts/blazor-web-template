@@ -1,0 +1,17 @@
+{
+  "name": "blazor-web-template",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build:css": "tailwindcss -i ./src/input.css -o ./wwwroot/css/app.css --minify",
+    "watch:css": "tailwindcss -i ./src/input.css -o ./wwwroot/css/app.css --watch",
+    "predeploy": "npm run build:css && dotnet publish -c Release -o publish && shx cp publish/wwwroot/index.html publish/wwwroot/404.html",
+    "deploy": "gh-pages --nojekyll -d publish/wwwroot -t",
+    "new-site": "node scripts/new-site.js"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0",
+    "shx": "^0.4.0",
+    "tailwindcss": "^3.4.14"
+  }
+}

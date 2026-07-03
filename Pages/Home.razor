@@ -1,0 +1,56 @@
+@page "/"
+@implements IDisposable
+
+<PageTitle>@SiteConfig.SiteName</PageTitle>
+
+<div class="relative h-56 sm:h-72 md:h-96 lg:h-[28rem] overflow-hidden bg-gray-100">
+    <img src="@_images[_index]" alt="Hero" class="w-full h-full object-cover" />
+</div>
+
+<section class="max-w-3xl mx-auto px-6 py-10 text-center">
+    <h1 class="text-2xl sm:text-4xl lg:text-5xl font-bold">@SiteConfig.Hero.Title</h1>
+    <p class="mt-3 text-gray-600 text-base sm:text-lg">@SiteConfig.Hero.Subtitle</p>
+
+    <div class="flex items-center justify-center gap-3 mt-6">
+        <button @onclick="Prev" aria-label="Previous image" class="px-3 py-1.5 rounded-md bg-blue-50 text-accent text-xl font-bold">&lsaquo;</button>
+        <div class="flex items-center">
+            @for (var i = 0; i < _images.Length; i++)
+            {
+                var dotIndex = i;
+                <button aria-label="Show image @(dotIndex + 1)" @onclick="() => SetIndex(dotIndex)"
+                        class="@(dotIndex == _index ? "w-3 h-3 bg-accent rounded-full mx-1" : "w-2 h-2 bg-gray-300 rounded-full mx-1")"></button>
+            }
+        </div>
+        <button @onclick="Next" aria-label="Next image" class="px-3 py-1.5 rounded-md bg-blue-50 text-accent text-xl font-bold">&rsaquo;</button>
+    </div>
+</section>
+
+@code {
+    private readonly string[] _images =
+    {
+        "images/hero-1.jpg",
+        "images/hero-2.jpg",
+        "images/hero-3.jpg",
+        "images/hero-4.jpg",
+        "images/hero-5.jpg",
+    };
+
+    private int _index;
+    private Timer? _timer;
+
+    protected override void OnInitialized()
+    {
+        _timer = new Timer(_ => InvokeAsync(() => SetIndex(_index + 1)), null, 4000, 4000);
+    }
+
+    private void SetIndex(int next)
+    {
+        _index = ((next % _images.Length) + _images.Length) % _images.Length;
+        StateHasChanged();
+    }
+
+    private void Prev() => SetIndex(_index - 1);
+    private void Next() => SetIndex(_index + 1);
+
+    public void Dispose() => _timer?.Dispose();
+}

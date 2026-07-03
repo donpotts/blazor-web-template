@@ -1,0 +1,19 @@
+@inherits LayoutComponentBase
+
+<div class="min-h-screen flex flex-col bg-white text-gray-900">
+    <header class="h-16 border-b border-gray-200 flex items-center justify-between px-4 sm:px-8">
+        <span class="font-bold text-lg">@SiteConfig.SiteName</span>
+        <nav class="flex gap-5 text-sm font-semibold">
+            <NavLink href="" Match="NavLinkMatch.All" class="text-gray-600 hover:text-accent" ActiveClass="text-accent">Home</NavLink>
+            <NavLink href="about" class="text-gray-600 hover:text-accent" ActiveClass="text-accent">About</NavLink>
+            <NavLink href="services" class="text-gray-600 hover:text-accent" ActiveClass="text-accent">Services</NavLink>
+            <NavLink href="contact" class="text-gray-600 hover:text-accent" ActiveClass="text-accent">Contact</NavLink>
+        </nav>
+    </header>
+
+    <main class="flex-1">
+        @Body
+    </main>
+
+    <footer class="py-6 text-center text-gray-500 text-sm">@SiteConfig.Footer.Text</footer>
+</div>
