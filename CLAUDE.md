@@ -35,6 +35,10 @@ Add a new page: create `Pages/<Name>.razor` with `@page "/<name>"`, and add a ma
 
 `new-site.js` sets this automatically based on whether a domain was given. The custom domain itself is handled via `wwwroot/CNAME` (published as part of `publish/wwwroot/` automatically, since `wwwroot` already is the static-asset root for a Blazor WASM app — no separate `public/` folder trick needed here, unlike the Expo version).
 
+## wwwroot/.gitattributes — do not remove
+
+`wwwroot/.gitattributes` contains `* -text`. Without it, Git's `core.autocrlf` (commonly `true` on Windows) rewrites line endings in the published `_framework/*.js` files when `gh-pages` commits `publish/wwwroot` to the `gh-pages` branch. That silently changes their bytes *after* Blazor already baked SHA-256 Subresource Integrity hashes for them into `index.html`'s import map, so the browser refuses to load them ("Failed to find a valid digest in the integrity attribute") — a real incident hit during initial setup. Since this file lives in `wwwroot/`, it's copied into `publish/wwwroot/` by `dotnet publish` automatically, so it's already in place before `gh-pages` runs. Don't delete it or exclude it from publish.
+
 ## localStorage interop
 
 `wwwroot/js/interop.js` is a tiny global-scope JS bridge (`window.localStorageInterop.getItem/setItem`) called from `Pages/Contact.razor` via `IJSRuntime.InvokeAsync`. Deliberately not using a JS-isolation module pattern or a NuGet package like Blazored.LocalStorage — this is small enough that the minimal global-script approach is simpler and has one fewer dependency.
