@@ -8,7 +8,7 @@ set INIT_REPO=0
 if /i "%1"=="-InitRepo" set INIT_REPO=1
 if /i "%1"=="--init-repo" set INIT_REPO=1
 
-for /f "delims=" %%i in ('node -p "require(''./package.json'').name"') do set REPO_NAME=%%i
+for /f "delims=" %%i in ('node -p "require('./package.json').name"') do set REPO_NAME=%%i
 for /f "delims=" %%i in ('gh api user --jq .login') do set GH_USER=%%i
 
 if "%INIT_REPO%"=="1" (
