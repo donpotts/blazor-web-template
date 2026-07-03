@@ -78,6 +78,10 @@ If `wwwroot/CNAME` exists (written by `new-site.js` when you give it a domain), 
 
 There is no CI/CD here by design — deploying is always a manual, local `npm run deploy`.
 
+### One-command redeploy from the CLI
+
+`./redeploy.ps1` (PowerShell) wraps the above for quick manual testing: it runs `npm run deploy` (Tailwind + `dotnet publish` + `gh-pages` push) and opens the live URL in your browser. Pass `-InitRepo` the very first time for a brand-new project (no GitHub repo yet) — it initializes git, creates the GitHub repo via `gh repo create`, pushes `main`, then deploys. On later runs, just `./redeploy.ps1`.
+
 ## The contact form — localStorage, no backend
 
 `Pages/Contact.razor` is a real `EditForm` (Name/Email/Message) that, on submit, calls into `wwwroot/js/interop.js` (a tiny JS interop bridge, invoked via `IJSRuntime`) to read/write the browser's `localStorage` under the key `contact_submissions`, then re-renders the list of past submissions below the form. Since this is a static WASM app with nowhere to send the data otherwise, this is a way to demo persisted form data with zero backend:
