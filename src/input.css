@@ -21,3 +21,10 @@
   right: 0.75rem;
   top: 0.5rem;
 }
+
+/* Blazor's router focuses the page's <h1> on navigation for accessibility
+   announcements; hide the resulting visible focus ring (kept from the
+   default template). */
+h1:focus {
+  outline: none;
+}
